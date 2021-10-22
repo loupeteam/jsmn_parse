@@ -11,8 +11,8 @@
 #include <string.h>
 
 #ifndef _SG4 
-#include <stdlib.h>
-#define brsitoa( x, y ) itoa( (x), (char*)(y), 10)
+#include <stdio.h>
+#define brsitoa( x, y ) sprintf((char*)(y), "%d", x)
 #endif
 
 #ifdef __cplusplus
