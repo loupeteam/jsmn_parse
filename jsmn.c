@@ -10,6 +10,11 @@
 #include "jsmn.h"
 #include <string.h>
 
+#ifndef _SG4 
+#include <stdio.h>
+#define brsitoa( x, y ) sprintf((char*)(y), "%d", x)
+#endif
+
 #ifdef __cplusplus
 	};
 #endif
@@ -201,18 +206,18 @@ static int generateStructure(jsmn_parser *parser,const char *js, jsmntok_t *toke
 			structure->Size = tokens[Item].size;
 			switch(tokens[Item].type){
 				case JSON_ARRAY:
-					brsitoa(tokens[Item].size-1,(UDINT)&temp);
+					brsitoa(tokens[Item].size-1, (char*) &temp);
 					strncat((char*)&structure->Value,"[",max(len--,0));
 					strncat((char*)&structure->Value,(char*)&temp,max(len,0));
 					len = len - strlen(temp);
 					strncat((char*)&structure->Value,"]",max(len,0));
 					break;
 				case JSON_OBJECT:
-					//					strcat(&structure->Name,&".");
+//					strcat(&structure->Name,&".");
 					break;
 				default:
 					structure->Type = tokens[Item].type;
-					structure->Advanced.pValue = tokens[Item].start + js;
+					structure->Advanced.pValue = (unsigned long *) (tokens[Item].start + js);
 					structure->Advanced.ValueLen = tokens[Item].end - tokens[Item].start;
 					strncat((char*)&structure->Value,(char*)&structure->Structure[level],max(len,0)); // Prevent writing over and past the last character (to make sure there is a null)
 
@@ -223,7 +228,7 @@ static int generateStructure(jsmn_parser *parser,const char *js, jsmntok_t *toke
 			len = sizeof(structure->Name) - strlen((char*)&structure->Name) - 1; // Total size - current length - 1 char for null
 			switch(tokens[Item].type){
 				case JSON_ARRAY:
-					brsitoa(tokens[Item].size-1,(UDINT)&temp);
+					brsitoa(tokens[Item].size-1, (char *)&temp);
 					strncat((char*)&structure->Name,"[",max(len--,0));
 					strncat((char*)&structure->Name,(char*)&temp,max(len,0));
 					len = len - strlen(temp);
@@ -254,12 +259,12 @@ static int jsmn_collect_garbage(jsmn_parser *parser, jsmntok_t *tokens,const cha
 		if(tokens[lastItem].end >= 0){
 			
 			if(parser->callback.pFunction && (tokens[tokens[lastItem].parent].type == JSON_ARRAY || tokens[tokens[lastItem].parent].type == JSON_OBJECT)){
-				unsigned long (*dataCallback)(unsigned long,unsigned long);
-				dataCallback = (unsigned long (*)(unsigned long,unsigned long))parser->callback.pFunction;
+				unsigned long (*dataCallback)(unsigned long*,unsigned long*);
+				dataCallback = (unsigned long (*)(unsigned long*,unsigned long*))parser->callback.pFunction;
 				jsmn_callback_data callbackdata;
 				memset(&callbackdata,0,sizeof(callbackdata));
 				generateStructure(parser,js,tokens,parser->toknext - 1,&callbackdata);
-				dataCallback(parser->callback.pUserData,(UDINT)&callbackdata);
+				dataCallback(parser->callback.pUserData, (unsigned long*)&callbackdata);
 			}
 			parser->toksuper= tokens[lastItem].parent;
 			parser->toknext=lastItem;
@@ -276,15 +281,15 @@ static int jsmn_collect_garbage(jsmn_parser *parser, jsmntok_t *tokens,const cha
 void jsmn_cache(jsmn_parser *parser, const char *js, size_t len, jsmntok_t *tokens, unsigned int num_tokens){
 	int i;
 	if(parser->pcache==0){
-		parser->pcache= (UDINT)&parser->cache;
+		parser->pcache= (unsigned long*)&parser->cache;
 	}
 	char *pcache = (char*)parser->pcache;
 	for(i = 0;i<num_tokens;i++){
 		if(!tokens[i].cached && tokens[i].type == JSON_STRING){
 			memcpy(pcache,js + tokens[i].start,tokens[i].end - tokens[i].start);
 			tokens[i].cached = 1;
-			tokens[i].end = (INT)(((UDINT)pcache - parser->pcache) + (tokens[i].end - tokens[i].start));
-			tokens[i].start = (INT)((UDINT)pcache - parser->pcache);
+			tokens[i].end = (INT)((pcache - (char*)parser->pcache) + (tokens[i].end - tokens[i].start));
+			tokens[i].start = (INT)(pcache - (char*)parser->pcache);
 			pcache+= (tokens[i].end - tokens[i].start + 1);
 		}
 		else if(tokens[i].cached){
@@ -400,12 +405,12 @@ int jsmn_parse(jsmn_parser *parser, const char *js, size_t len,
 				if (parser->toksuper != -1 && tokens != NULL)
 					tokens[parser->toksuper].size++;
 				if(parser->isValue && parser->callback.pFunction){
-					unsigned long (*dataCallback)(unsigned long,unsigned long);
-					dataCallback = (unsigned long (*)(unsigned long,unsigned long))parser->callback.pFunction;
+					unsigned long (*dataCallback)(unsigned long *,unsigned long*);
+					dataCallback = (unsigned long (*)(unsigned long*,unsigned long*))parser->callback.pFunction;
 					jsmn_callback_data callbackdata;
 					memset(&callbackdata,0,sizeof(callbackdata));
 					generateStructure(parser,js,tokens,parser->toknext - 1,&callbackdata);
-					dataCallback(parser->callback.pUserData,(UDINT)&callbackdata);
+					dataCallback(parser->callback.pUserData, (unsigned long*)&callbackdata);
 				}
 				parser->isValue = 0;
 				break;
@@ -475,12 +480,12 @@ int jsmn_parse(jsmn_parser *parser, const char *js, size_t len,
 				if (parser->toksuper != -1 && tokens != NULL)
 					tokens[parser->toksuper].size++;
 				if(parser->callback.pFunction){
-					unsigned long (*dataCallback)(unsigned long,unsigned long);
-					dataCallback = (unsigned long (*)(unsigned long,unsigned long))parser->callback.pFunction;
+					unsigned long (*dataCallback)(unsigned long*,unsigned long*);
+					dataCallback = (unsigned long (*)(unsigned long*,unsigned long*))parser->callback.pFunction;
 					jsmn_callback_data callbackdata;
 					memset(&callbackdata,0,sizeof(callbackdata));
 					generateStructure(parser,js,tokens,parser->toknext - 1,&callbackdata);
-					dataCallback(parser->callback.pUserData,(UDINT)&callbackdata);
+					dataCallback(parser->callback.pUserData, (unsigned long*)&callbackdata);
 				}				
 				break;
 #ifdef JSMN_STRICT

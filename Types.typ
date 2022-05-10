@@ -22,7 +22,7 @@ TYPE
 		toksuper : INT;
 		callback : jsmn_callback;
 		isValue : BOOL;
-		pcache : UDINT;
+		pcache : REFERENCE TO UDINT;
 		endpos : UDINT;
 		cache : STRING[JSMN_STRLEN_CACHE];
 	END_STRUCT;
@@ -41,11 +41,11 @@ TYPE
 		JSON_PRIMITIVE
 		);
 	jsmn_callback : 	STRUCT 
-		pFunction : UDINT;
-		pUserData : UDINT;
+		pFunction : REFERENCE TO UDINT;
+		pUserData : REFERENCE TO UDINT;
 	END_STRUCT;
 	jsmn_callback_advanced_data : 	STRUCT 
-		pValue : UDINT;
+		pValue : REFERENCE TO UDINT;
 		ValueLen : UDINT;
 	END_STRUCT;
 	jsmn_callback_data : 	STRUCT 

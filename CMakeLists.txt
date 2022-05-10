@@ -8,7 +8,7 @@ cmake_minimum_required(VERSION 3.11-3.18)
 project(jsmn_parse)
 
 file(GLOB poly_SRC
-     "*.c"
+     "jsmn.c"
 )
 add_library(jsmn_parse ${poly_SRC})
 add_definitions(-D_REPLACE_CONST)
