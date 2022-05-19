@@ -12,6 +12,3 @@ file(GLOB poly_SRC
 )
 add_library(jsmn_parse ${poly_SRC})
 add_definitions(-D_REPLACE_CONST)
-
-target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/../includes/)
-target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/../includes/loupe/Includes/)
