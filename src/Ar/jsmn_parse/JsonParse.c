@@ -1,3 +1,12 @@
+/*
+ * File: JsonParse.c
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of jsmn_parse, licensed under the MIT License.
+ */
+
+
 
 #include <bur/plctypes.h>
 

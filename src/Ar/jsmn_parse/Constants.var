@@ -1,3 +1,11 @@
+(*
+ * File: Constants.var
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of jsmn_parse, licensed under the MIT License.
+ * )
+ 
 VAR CONSTANT
 	JSMN_MAX_TOKENS : USINT := 128;
 	JSMN_MAI_STRUCT_LEVEL : USINT := 15;

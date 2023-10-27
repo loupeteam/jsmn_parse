@@ -1,3 +1,12 @@
+(*
+ * File: jsmn_parse.fun
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of jsmn_parse, licensed under the MIT License.
+ * )
+ 
+
 
 FUNCTION JsmnInit : INT
 	VAR_INPUT
