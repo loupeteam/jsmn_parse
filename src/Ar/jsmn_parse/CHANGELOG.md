@@ -1,3 +1,5 @@
+2.0.0 - Update to AS6
+
 1.5.0 - Add Support for 64 bit build
 
 1.4.0 - Add pValue and ValueLen to callback data
