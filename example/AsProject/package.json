@@ -1,19 +1,15 @@
 {
-    "name": "@loupeteam/librarybuilderproject",
-    "version": "0.2.0",
-    "description": "LibraryBuilderProject is a minimal Automation studio project used to build libraries for Intel and ARM configurations",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/loupeteam/StarterAsProject.git"
-    },
-    "author": "Loupe",
-    "license": "MIT",
-    "lpmConfig": {
-        "deploymentConfigs": [
-            "Intel",
-            "ARM"
-        ],
-        "gitClient": "GitExtensions"
-    },
-    "dependencies": {}
+  "name": "asproject",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@loupeteam/librarybuilderproject": "^1.0.0"
+  }
 }
