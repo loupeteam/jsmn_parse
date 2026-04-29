@@ -17,13 +17,12 @@
     <Object Type="Package">mappView</Object>
     <Object Type="Package">mappVision</Object>
     <Object Type="Package">mappCockpit</Object>
-    <Object Type="Package">Motion</Object>
   </Objects>
   <Configuration ModuleId="X20CP0410">
-    <AutomationRuntime Version="B4.91" />
-    <Build GccVersion="6.3.0" />
+    <AutomationRuntime Version="6.6.2" />
+    <Build GccVersion="11.3.0" />
     <DefaultTargetMemory Tasks="UserROM" />
     <Safety SafetyRelease="0.0" />
-    <Vc FirmwareVersion="V4.72.5" />
+    <Vc FirmwareVersion="6.0.0" />
   </Configuration>
 </Cpu>

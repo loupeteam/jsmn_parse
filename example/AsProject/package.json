@@ -15,8 +15,5 @@
         ],
         "gitClient": "GitExtensions"
     },
-    "dependencies": {
-        "@loupeteam/jsmn_parse": "^1.5.0",
-        "@loupeteam/librarybuilderproject": "^0.3.0"
-    }
+    "dependencies": {}
 }

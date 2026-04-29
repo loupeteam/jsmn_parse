@@ -5,6 +5,5 @@
     <Object Type="Package">_AS</Object>
     <Object Type="Package">Loupe</Object>
     <Object Type="Package">Mapp</Object>
-    <Object Type="Package">Motion</Object>
   </Objects>
 </Package>
