@@ -506,8 +506,13 @@ int jsmn_parse(jsmn_parser *parser, const char *js, size_t len,
 	}
 
 	incomplete:
-	
-	jsmn_cache(parser, js, len, tokens, num_tokens);
+
+	/* The cache exists to preserve name strings for the streaming callback.
+	   Without a callback it would only remap token start/end into cache
+	   offsets, breaking lookups against the original JSON string. */
+	if(parser->callback.pFunction){
+		jsmn_cache(parser, js, len, tokens, num_tokens);
+	}
 	
 	if (tokens != NULL) {
 		for (i = parser->toknext - 1; i >= 0; i--) {
@@ -531,5 +536,10 @@ void jsmn_init(jsmn_parser *parser) {
 	parser->toksuper = -1;
 	parser->endpos=0;
 	parser->isValue=0;
+	/* These must be cleared too: jsmn_parse() calls through callback.pFunction
+	   and jsmn_cache() writes through pcache whenever they are non-zero */
+	parser->callback.pFunction = 0;
+	parser->callback.pUserData = 0;
+	parser->pcache = 0;
 }
 
