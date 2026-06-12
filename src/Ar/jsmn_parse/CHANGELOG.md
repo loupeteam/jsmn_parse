@@ -1,3 +1,9 @@
+2.0.1 - Fix uninitialized callback/pcache in jsmn_init() causing intermittent
+         page faults in JsonParse() (wild callback call / wild cache write)
+        Skip jsmn_cache() when no streaming callback is registered, so
+         JsonParse() token Start/End stay valid against the JSON string
+        Fix out-of-bounds read in JsonGetValue() when the key is not found
+
 2.0.0 - Update to AS6
 
 1.5.0 - Add Support for 64 bit build

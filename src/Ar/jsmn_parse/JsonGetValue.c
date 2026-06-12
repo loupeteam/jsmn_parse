@@ -41,8 +41,9 @@ signed short JsonGetValue(unsigned long pJsonString, unsigned long pTokenArray, 
 	t2 = (json_token*)pTokenArray;
 
 	Offset = JsonTokenEqual(pJsonString,pTokenArray,pName);
-	//check if a value exist for found token
-	if(t2[Offset].Size > 0){
+	//check if the token was found and a value exists for it
+	//(JsonTokenEqual returns -1 if not found; t2[-1] is out of bounds)
+	if(Offset >= 0 && t2[Offset].Size > 0){
 		ValueFound = 1;
 		//check if value string pointer exists
 		if (pStrValue !=0){
